@@ -169,6 +169,20 @@ Each target prints tailored next steps. In general:
 - Real browser OAuth login (device flow)
 - More frameworks (SvelteKit, NestJS, etc.)
 
+## Disclaimer
+
+PlugNPlay is provided "as is" and without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. Use it at your own risk.
+
+- **Your responsibility.** PlugNPlay generates configuration, environment files, and boilerplate for your project. You are solely responsible for reviewing the generated code, securing your Supabase project (including but not limited to enabling Row Level Security, configuring authentication providers, and managing access), and complying with the terms of service of any third-party services you use (e.g. Supabase, npm).
+- **Credentials.** PlugNPlay only ever reads and writes your project's **anon (publishable) key**, which is designed to be public. Never commit secrets to your repository — this includes your Supabase access token and your `service_role` key. The security of your Supabase account and any credentials you provide is entirely your responsibility.
+- **No affiliation.** PlugNPlay is an independent, open-source project. It is not affiliated with, endorsed by, or sponsored by Supabase or npm.
+- **No liability.** In no event shall the authors or copyright holders be liable for any claim, damages, or other liability arising from, out of, or in connection with the software or the use or other dealings in the software.
+- **No data collection.** PlugNPlay does not collect, store, or transmit any personal, account, or project data. It communicates only with the Supabase Management API for actions you explicitly initiate, and never with any third-party servers.
+- **Generated code is a starting point.** The scaffolded code follows official SDK usage, but it is not a substitute for your own security review. Always audit generated auth flows, middleware, and route protection before deploying to production.
+- **Not legal advice.** This disclaimer is informational and does not constitute legal advice. If you have concerns about your specific use case, consult a qualified professional.
+
+By using PlugNPlay, you acknowledge that you have read and understood this disclaimer.
+
 ## Development
 
 ```bash
