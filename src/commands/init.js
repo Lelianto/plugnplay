@@ -7,6 +7,7 @@ import {
   isCancel,
   log,
   outro,
+  password,
   select,
   spinner,
   text,
@@ -116,7 +117,7 @@ async function connectSupabase() {
   }
 
   while (true) {
-    const token = await text({
+    const token = await password({
       message:
         "Paste your Supabase access token (create one at supabase.com/dashboard/account/tokens)",
       placeholder: "sbp_...",
