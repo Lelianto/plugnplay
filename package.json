@@ -1,0 +1,33 @@
+{
+  "name": "plugnplay-cli",
+  "version": "0.1.0",
+  "description": "One-command Supabase setup for new projects. Login, pick a project, done.",
+  "type": "module",
+  "bin": {
+    "plugnplay": "bin/plugnplay.js"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "check": "node scripts/check.js",
+    "prepublishOnly": "npm run check"
+  },
+  "keywords": [
+    "cli",
+    "supabase",
+    "firebase",
+    "auth",
+    "scaffold",
+    "setup"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "picocolors": "^1.1.1"
+  }
+}
