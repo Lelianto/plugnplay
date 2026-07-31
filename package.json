@@ -1,6 +1,6 @@
 {
   "name": "plugnplay-cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "One-command Supabase setup for new projects. Login, pick a project, done.",
   "type": "module",
   "bin": {
