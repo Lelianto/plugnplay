@@ -5,184 +5,410 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="PlugNPlay is a one-command CLI that connects new projects to Supabase and scaffolds auth boilerplate."
+      content="PlugNPlay is a focused CLI for wiring Supabase auth into Next.js, Vite React, and Express projects."
     />
     <title>PlugNPlay CLI</title>
     <style>
       :root {
         color-scheme: light;
-        --ink: #141414;
-        --muted: #5d656f;
-        --line: #d9e0e7;
-        --paper: #f8fafb;
-        --panel: #ffffff;
-        --accent: #148f77;
-        --accent-dark: #0f6f5d;
-        --code: #111827;
+        --ink: #171511;
+        --muted: #69645c;
+        --faint: #8c857a;
+        --paper: #f6f2ea;
+        --panel: #fffdf8;
+        --line: #d8cfc0;
+        --green: #147a62;
+        --blue: #285f8f;
+        --red: #b54535;
+        --yellow: #e4b950;
+        --code: #1c1a17;
+        --code-muted: #a9a094;
       }
 
       * {
         box-sizing: border-box;
       }
 
+      * {
+        min-width: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
-        min-height: 100vh;
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
+        overflow-x: hidden;
         color: var(--ink);
         background:
-          linear-gradient(135deg, rgba(20, 143, 119, 0.1), transparent 34rem),
+          linear-gradient(90deg, rgba(23, 21, 17, 0.045) 1px, transparent 1px),
+          linear-gradient(rgba(23, 21, 17, 0.045) 1px, transparent 1px),
           var(--paper);
-      }
-
-      main {
-        width: min(1120px, calc(100% - 32px));
-        margin: 0 auto;
-        padding: 56px 0;
-      }
-
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
-        gap: 40px;
-        align-items: center;
-        min-height: calc(100vh - 112px);
-      }
-
-      .eyebrow {
-        margin: 0 0 18px;
-        color: var(--accent-dark);
-        font-size: 0.8rem;
-        font-weight: 800;
-        letter-spacing: 0;
-        text-transform: uppercase;
-      }
-
-      h1 {
-        margin: 0;
-        max-width: 760px;
-        font-size: clamp(3rem, 8vw, 6.8rem);
-        line-height: 0.88;
-        letter-spacing: 0;
-      }
-
-      .lede {
-        max-width: 680px;
-        margin: 24px 0 0;
-        color: var(--muted);
-        font-size: clamp(1.05rem, 2vw, 1.28rem);
-        line-height: 1.65;
-      }
-
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 32px;
+        background-size: 34px 34px;
+        font-family:
+          ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
       }
 
       a {
         color: inherit;
       }
 
-      .button {
-        display: inline-flex;
-        min-height: 46px;
+      .page {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .nav {
+        display: flex;
         align-items: center;
-        justify-content: center;
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        padding: 0 18px;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 22px 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 900;
+      }
+
+      .mark {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border: 2px solid var(--ink);
+        border-radius: 7px;
+        background: var(--yellow);
+        box-shadow: 4px 4px 0 var(--ink);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-end;
+      }
+
+      .nav-links a,
+      .button {
+        min-height: 40px;
+        border: 2px solid var(--ink);
+        border-radius: 7px;
+        padding: 9px 13px;
         background: var(--panel);
-        color: var(--ink);
-        font-weight: 750;
+        box-shadow: 3px 3px 0 var(--ink);
+        font-size: 0.92rem;
+        font-weight: 800;
         text-decoration: none;
       }
 
       .button.primary {
-        border-color: var(--accent);
-        background: var(--accent);
+        background: var(--green);
         color: white;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+        gap: 32px;
+        align-items: end;
+        min-height: calc(100vh - 86px);
+        padding: 32px 0 54px;
+      }
+
+      .stamp {
+        display: inline-flex;
+        align-items: center;
+        max-width: 100%;
+        gap: 8px;
+        margin-bottom: 18px;
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        padding: 8px 12px;
+        background: var(--panel);
+        box-shadow: 3px 3px 0 var(--ink);
+        color: var(--green);
+        font-size: 0.82rem;
+        font-weight: 900;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        overflow-wrap: anywhere;
+      }
+
+      .stamp::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--green);
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 860px;
+        font-size: clamp(3.7rem, 12vw, 9.7rem);
+        line-height: 0.82;
+        letter-spacing: 0;
+      }
+
+      .lede {
+        max-width: 720px;
+        margin: 25px 0 0;
+        color: var(--muted);
+        font-size: clamp(1.08rem, 2vw, 1.35rem);
+        line-height: 1.62;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 30px;
       }
 
       .terminal {
         overflow: hidden;
-        border: 1px solid var(--line);
+        border: 2px solid var(--ink);
         border-radius: 8px;
         background: var(--code);
-        color: #eef6f3;
-        box-shadow: 0 24px 70px rgba(17, 24, 39, 0.16);
+        box-shadow: 10px 10px 0 var(--ink);
       }
 
-      .terminal-bar {
+      .terminal-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 14px;
+        border-bottom: 2px solid #3a352e;
+        padding: 12px 14px;
+        color: var(--code-muted);
+        font: 0.8rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+
+      .lights {
         display: flex;
         gap: 7px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 14px 16px;
       }
 
-      .dot {
+      .light {
         width: 11px;
         height: 11px;
-        border-radius: 999px;
-        background: #ff6b6b;
+        border-radius: 50%;
+        background: var(--red);
       }
 
-      .dot:nth-child(2) {
-        background: #ffd166;
+      .light:nth-child(2) {
+        background: var(--yellow);
       }
 
-      .dot:nth-child(3) {
-        background: #06d6a0;
+      .light:nth-child(3) {
+        background: var(--green);
       }
 
       pre {
         margin: 0;
         overflow-x: auto;
-        padding: 24px;
-        font: 0.96rem/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas,
-          "Liberation Mono", monospace;
+        max-width: 100%;
+        padding: 22px;
+        color: #f7f0e4;
+        font: 0.93rem/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas,
+          monospace;
       }
 
-      .ok {
-        color: #7dd3c7;
+      .dim {
+        color: var(--code-muted);
       }
 
-      .features {
+      .good {
+        color: #7ed6bf;
+      }
+
+      .section {
+        padding: 66px 0;
+        border-top: 2px solid var(--ink);
+      }
+
+      .section-title {
+        display: grid;
+        grid-template-columns: minmax(220px, 0.42fr) minmax(0, 0.58fr);
+        gap: 26px;
+        align-items: start;
+        margin-bottom: 24px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 4.2rem);
+        line-height: 0.94;
+        letter-spacing: 0;
+      }
+
+      .section-title p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.7;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .step,
+      .card,
+      .matrix-row,
+      .note {
+        border: 2px solid var(--ink);
+        border-radius: 8px;
+        background: var(--panel);
+        box-shadow: 5px 5px 0 var(--ink);
+      }
+
+      .step {
+        min-height: 170px;
+        padding: 16px;
+      }
+
+      .num {
+        display: inline-grid;
+        width: 31px;
+        height: 31px;
+        place-items: center;
+        border: 2px solid var(--ink);
+        border-radius: 50%;
+        background: var(--yellow);
+        font-weight: 950;
+      }
+
+      h3 {
+        margin: 14px 0 8px;
+        font-size: 1.04rem;
+      }
+
+      .step p,
+      .card p,
+      .note p,
+      .mini {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.56;
+      }
+
+      .matrix {
+        display: grid;
+        gap: 12px;
+      }
+
+      .matrix-row {
+        display: grid;
+        grid-template-columns: 180px minmax(0, 1fr) 210px;
+        gap: 18px;
+        align-items: start;
+        padding: 18px;
+      }
+
+      .target {
+        font-size: 1.08rem;
+        font-weight: 950;
+      }
+
+      .files {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      code,
+      .pill {
+        max-width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #f1eadf;
+        padding: 4px 7px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.86rem;
+        overflow-wrap: anywhere;
+      }
+
+      .grid-3 {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
-        margin-top: -24px;
-        padding-bottom: 48px;
+        gap: 14px;
       }
 
-      .feature {
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.78);
+      .card {
+        padding: 18px;
+      }
+
+      .card strong {
+        display: block;
+        margin-bottom: 9px;
+        font-size: 1.02rem;
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: 18px;
+      }
+
+      .note {
         padding: 20px;
       }
 
-      .feature h2 {
-        margin: 0 0 10px;
-        font-size: 1rem;
+      .checklist {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
       }
 
-      .feature p {
-        margin: 0;
+      .checklist li {
+        display: grid;
+        grid-template-columns: 26px minmax(0, 1fr);
+        gap: 10px;
         color: var(--muted);
         line-height: 1.55;
       }
 
-      @media (max-width: 840px) {
-        main {
-          padding: 32px 0;
-        }
+      .checklist li::before {
+        content: "ok";
+        display: grid;
+        height: 24px;
+        place-items: center;
+        border: 2px solid var(--ink);
+        border-radius: 5px;
+        background: var(--green);
+        color: white;
+        font-size: 0.62rem;
+        font-weight: 950;
+      }
 
+      .footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 30px 0 46px;
+        border-top: 2px solid var(--ink);
+        color: var(--muted);
+      }
+
+      @media (max-width: 920px) {
         .hero,
-        .features {
+        .section-title,
+        .split,
+        .matrix-row {
           grid-template-columns: 1fr;
         }
 
@@ -190,65 +416,393 @@
           min-height: auto;
         }
 
+        .flow,
+        .grid-3 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          width: min(100% - 24px, 1180px);
+        }
+
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .nav-links {
+          justify-content: flex-start;
+        }
+
         h1 {
-          font-size: clamp(3.2rem, 16vw, 5.2rem);
+          font-size: clamp(3rem, 18vw, 5rem);
+          line-height: 0.88;
+        }
+
+        .flow,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+
+        .terminal {
+          box-shadow: 6px 6px 0 var(--ink);
+        }
+      }
+
+      @media (max-width: 420px) {
+        .page {
+          width: min(100% - 18px, 1180px);
+        }
+
+        .nav-links a,
+        .button {
+          width: 100%;
+          text-align: center;
+        }
+
+        .nav-links,
+        .actions {
+          width: 100%;
+        }
+
+        .stamp {
+          border-radius: 8px;
+          font-size: 0.75rem;
+        }
+
+        h1 {
+          font-size: clamp(2.55rem, 17vw, 4.2rem);
+        }
+
+        h2 {
+          font-size: clamp(1.8rem, 12vw, 3rem);
+        }
+
+        .section {
+          padding: 46px 0;
+        }
+
+        .step,
+        .card,
+        .matrix-row,
+        .note {
+          box-shadow: 3px 3px 0 var(--ink);
+        }
+
+        pre {
+          padding: 16px;
+          font-size: 0.82rem;
         }
       }
     </style>
   </head>
   <body>
-    <main>
-      <section class="hero" aria-label="PlugNPlay overview">
-        <div>
-          <p class="eyebrow">Supabase auth scaffolding CLI</p>
-          <h1>PlugNPlay</h1>
-          <p class="lede">
-            One command connects a fresh project to Supabase, writes the
-            environment file, and generates auth boilerplate for Next.js,
-            Vite React, or Express.
-          </p>
-          <div class="actions">
-            <a class="button primary" href="https://www.npmjs.com/package/plugnplay-cli">
-              View npm package
-            </a>
-            <a class="button" href="https://github.com/Lelianto/plugnplay">
-              View source
-            </a>
-          </div>
+    <div class="page">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="PlugNPlay home">
+          <span class="mark">pn</span>
+          <span>PlugNPlay CLI</span>
+        </a>
+        <div class="nav-links">
+          <a href="#flow">Flow</a>
+          <a href="#targets">Targets</a>
+          <a href="#security">Security</a>
+          <a href="#package">Package</a>
         </div>
+      </nav>
 
-        <div class="terminal" aria-label="Command line preview">
-          <div class="terminal-bar" aria-hidden="true">
-            <span class="dot"></span>
-            <span class="dot"></span>
-            <span class="dot"></span>
+      <main id="top">
+        <section class="hero" aria-label="PlugNPlay overview">
+          <div>
+            <span class="stamp">supabase setup without dashboard hopping</span>
+            <h1>Auth scaffolding, not another starter kit.</h1>
+            <p class="lede">
+              PlugNPlay is a small npm CLI that connects an existing project to
+              Supabase, writes the right environment variables, and drops in
+              framework-specific auth files without overwriting your work.
+            </p>
+            <div class="actions">
+              <a
+                class="button primary"
+                href="https://www.npmjs.com/package/plugnplay-cli"
+              >
+                npm install path
+              </a>
+              <a class="button" href="https://github.com/Lelianto/plugnplay">
+                source code
+              </a>
+            </div>
           </div>
-          <pre><code>$ npx plugnplay-cli init
+
+          <div class="terminal" aria-label="PlugNPlay command preview">
+            <div class="terminal-head">
+              <div class="lights" aria-hidden="true">
+                <span class="light"></span>
+                <span class="light"></span>
+                <span class="light"></span>
+              </div>
+              <span>fresh-project/auth-setup</span>
+            </div>
+            <pre><code>$ npx plugnplay-cli init
+<span class="dim">detecting package.json...</span>
+
 ◆ What framework is this project using?
-  Next.js (App Router, TypeScript)
-  Vite + React (TypeScript)
-  Node.js + Express (TypeScript)
+  Next.js App Router
+  Vite + React
+  Express
 
-<span class="ok">✔ created .env.local</span>
-<span class="ok">✔ created auth boilerplate</span>
-<span class="ok">✔ ready to test login/register</span></code></pre>
-        </div>
-      </section>
+◆ How do you want to connect?
+  Paste Supabase access token
+  Enter URL + anon key manually
 
-      <section class="features" aria-label="Project highlights">
-        <article class="feature">
-          <h2>Non-destructive</h2>
-          <p>Existing files are skipped and reported, so setup can be rerun safely.</p>
-        </article>
-        <article class="feature">
-          <h2>Framework-aware</h2>
-          <p>Detects common project stacks and writes matching Supabase clients.</p>
-        </article>
-        <article class="feature">
-          <h2>Token-safe</h2>
-          <p>Personal access tokens are used only during the session and never saved.</p>
-        </article>
-      </section>
-    </main>
+<span class="good">created .env.local</span>
+<span class="good">created src/lib/supabase/client.ts</span>
+<span class="good">created login, signup, callback, auth helpers</span>
+<span class="dim">next: install SDKs and test /login</span></code></pre>
+          </div>
+        </section>
+
+        <section class="section" id="flow" aria-labelledby="flow-title">
+          <div class="section-title">
+            <h2 id="flow-title">What the command actually does.</h2>
+            <p>
+              The CLI is intentionally narrow. It does not create a full app,
+              own your routing, or hide Supabase behind a new abstraction. It
+              automates the tedious wiring you would otherwise copy from docs.
+            </p>
+          </div>
+
+          <div class="flow">
+            <article class="step">
+              <span class="num">1</span>
+              <h3>Detects the stack</h3>
+              <p>
+                Reads the target project's <code>package.json</code> and checks
+                for Next.js, Vite, or Express dependencies.
+              </p>
+            </article>
+            <article class="step">
+              <span class="num">2</span>
+              <h3>Connects to Supabase</h3>
+              <p>
+                Uses a temporary access token to list projects, or accepts a
+                manual project URL and anon key.
+              </p>
+            </article>
+            <article class="step">
+              <span class="num">3</span>
+              <h3>Fetches the anon key</h3>
+              <p>
+                Calls the Management API for the chosen project and avoids
+                writing service role keys into generated code.
+              </p>
+            </article>
+            <article class="step">
+              <span class="num">4</span>
+              <h3>Writes files safely</h3>
+              <p>
+                Creates env files and auth templates only when those paths do
+                not already exist.
+              </p>
+            </article>
+            <article class="step">
+              <span class="num">5</span>
+              <h3>Prints next steps</h3>
+              <p>
+                Shows the SDK install command and the exact page or route to
+                wire into the app.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="targets" aria-labelledby="targets-title">
+          <div class="section-title">
+            <h2 id="targets-title">Generated output by framework.</h2>
+            <p>
+              Each target receives files that match how that framework normally
+              handles environment variables, sessions, and auth routes.
+            </p>
+          </div>
+
+          <div class="matrix">
+            <article class="matrix-row">
+              <div class="target">Next.js App Router</div>
+              <div class="files" aria-label="Next.js generated files">
+                <span class="pill">.env.local</span>
+                <span class="pill">middleware.ts</span>
+                <span class="pill">src/lib/supabase/client.ts</span>
+                <span class="pill">src/lib/supabase/server.ts</span>
+                <span class="pill">src/lib/supabase/middleware.ts</span>
+                <span class="pill">src/lib/auth.ts</span>
+                <span class="pill">src/lib/auth-server.ts</span>
+                <span class="pill">app/login/page.tsx</span>
+                <span class="pill">app/signup/page.tsx</span>
+                <span class="pill">app/auth/callback/route.ts</span>
+              </div>
+              <p class="mini">
+                Session refresh, protected routes, login, signup, sign-out, and
+                OAuth callback support.
+              </p>
+            </article>
+
+            <article class="matrix-row">
+              <div class="target">Vite + React</div>
+              <div class="files" aria-label="Vite generated files">
+                <span class="pill">.env.local</span>
+                <span class="pill">src/lib/supabase.ts</span>
+                <span class="pill">src/lib/auth.ts</span>
+                <span class="pill">src/context/AuthContext.tsx</span>
+                <span class="pill">src/pages/LoginPage.tsx</span>
+              </div>
+              <p class="mini">
+                Browser client, auth helpers, provider state, login UI, and
+                OAuth helpers.
+              </p>
+            </article>
+
+            <article class="matrix-row">
+              <div class="target">Express</div>
+              <div class="files" aria-label="Express generated files">
+                <span class="pill">.env</span>
+                <span class="pill">src/lib/supabase.ts</span>
+                <span class="pill">src/routes/auth.ts</span>
+              </div>
+              <p class="mini">
+                REST endpoints for signup, login, and logout that can be mounted
+                in an existing server.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="security" aria-labelledby="security-title">
+          <div class="section-title">
+            <h2 id="security-title">Security posture.</h2>
+            <p>
+              PlugNPlay treats credentials as setup material, not app state. It
+              keeps the powerful token out of the generated project and writes
+              only browser-safe Supabase configuration.
+            </p>
+          </div>
+
+          <div class="grid-3">
+            <article class="card">
+              <strong>Access token stays temporary</strong>
+              <p>
+                The Supabase personal access token is used for the current CLI
+                session and is never written to disk.
+              </p>
+            </article>
+            <article class="card">
+              <strong>No service role output</strong>
+              <p>
+                Generated files use anon or publishable keys. Service role keys
+                are deliberately avoided.
+              </p>
+            </article>
+            <article class="card">
+              <strong>Non-destructive writes</strong>
+              <p>
+                Existing files are skipped and reported instead of silently
+                overwritten.
+              </p>
+            </article>
+            <article class="card">
+              <strong>Response validation</strong>
+              <p>
+                Project lists, API key lists, and project refs are checked before
+                the generator trusts them.
+              </p>
+            </article>
+            <article class="card">
+              <strong>Safer env formatting</strong>
+              <p>
+                Environment values that need escaping are quoted before they are
+                written.
+              </p>
+            </article>
+            <article class="card">
+              <strong>User-owned security</strong>
+              <p>
+                The scaffold is a starting point. Apps still need RLS policies,
+                provider settings, and production review.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="package" aria-labelledby="package-title">
+          <div class="section-title">
+            <h2 id="package-title">Package and deploy notes.</h2>
+            <p>
+              The npm package is a Node 18+ ESM CLI with a small dependency
+              surface. This page is separate from the package and can be served
+              by Vercel as a static root page.
+            </p>
+          </div>
+
+          <div class="split">
+            <div class="terminal" aria-label="Package commands">
+              <div class="terminal-head">
+                <div class="lights" aria-hidden="true">
+                  <span class="light"></span>
+                  <span class="light"></span>
+                  <span class="light"></span>
+                </div>
+                <span>release hygiene</span>
+              </div>
+              <pre><code>$ npm run check
+<span class="good">All files OK</span>
+
+$ npm test
+<span class="good">4 tests passing</span>
+
+$ git tag v0.1.6
+$ git push origin v0.1.6
+<span class="dim">GitHub Actions publishes to npm on v* tags</span></code></pre>
+            </div>
+
+            <div class="note">
+              <ul class="checklist">
+                <li>
+                  <span>
+                    <strong>Install:</strong> run <code>npx plugnplay-cli init</code>
+                    inside an existing app.
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    <strong>Binary:</strong> the installed command is
+                    <code>plugnplay</code>, with <code>init</code>,
+                    <code>help</code>, and <code>version</code>.
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    <strong>Publish:</strong> npm release is triggered by a
+                    pushed git tag like <code>v0.1.6</code>.
+                  </span>
+                </li>
+                <li>
+                  <span>
+                    <strong>Vercel:</strong> use no build command. The included
+                    <code>vercel.json</code> rewrites all routes to
+                    <code>/index.html</code>.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>PlugNPlay CLI, focused Supabase setup for real projects.</span>
+        <span>Static page served from <code>index.html</code>.</span>
+      </footer>
+    </div>
   </body>
 </html>
