@@ -5,7 +5,7 @@
 `plugnplay` removes the friction of wiring a new project to a cloud backend. Instead of reading docs, copy-pasting env vars, and writing auth boilerplate by hand, you run a single command — the CLI authenticates with your Supabase account, lists your projects, and scaffolds a fully configured client with login/register/logout for your chosen framework.
 
 ```bash
-npx plugnplay init
+npx plugnplay-cli init
 ```
 
 ## Why
@@ -42,7 +42,7 @@ PlugNPlay collapses steps 2–6 into one interactive command — and it is non-d
 
 ```bash
 # run from your project directory (new or existing)
-npx plugnplay init
+npx plugnplay-cli init
 ```
 
 The CLI will:
@@ -72,7 +72,7 @@ PlugNPlay uses the **Supabase Management API** to automate what you would otherw
 ```
  you             plugnplay                        supabase.com (api.supabase.com/v1)
   |                  |                                      |
-  | npx plugnplay    |                                      |
+  | npx plugnplay-cli|                                      |
   | init             |                                      |
   |----------------->|                                      |
   | paste token      |                                      |
@@ -120,7 +120,7 @@ Templates live in `src/templates/<framework>/` and are rendered with the project
 
 ```bash
 $ cd my-app
-$ npx plugnplay init
+$ npx plugnplay-cli init
 
 ◆  What framework is this project using?
 │  ● Next.js (App Router, TypeScript)  (recommended)
@@ -188,8 +188,16 @@ By using PlugNPlay, you acknowledge that you have read and understood this discl
 ```bash
 npm install
 npm run check        # syntax-check all JS files
+npm test             # run security and generator helper tests
 node bin/plugnplay.js init   # run locally
 ```
+
+## Vercel static deploy
+
+This repository includes a root `index.html` and `vercel.json` for a static
+project page. In Vercel, deploy it as a static project with no build command;
+`vercel.json` already points output to the repository root and rewrites all
+routes directly to `/index.html`.
 
 ## License
 

@@ -14,10 +14,24 @@ export async function listProjects(token) {
     throw new Error(`Supabase API error (${res.status})`);
   }
 
-  return res.json();
+  const projects = await res.json();
+  if (!Array.isArray(projects)) {
+    throw new Error("Supabase API returned an unexpected projects response");
+  }
+
+  return projects
+    .filter((project) => isNonEmptyString(project?.ref))
+    .map((project) => ({
+      ref: project.ref,
+      name: isNonEmptyString(project.name) ? project.name : project.ref,
+    }));
 }
 
 export async function getProjectApiKey(token, ref) {
+  if (!isValidProjectRef(ref)) {
+    throw new Error("Invalid Supabase project ref");
+  }
+
   const res = await fetch(`${MGMT_URL}/projects/${ref}/api-keys`, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -26,12 +40,16 @@ export async function getProjectApiKey(token, ref) {
   }
 
   const keys = await res.json();
-  const anon =
-    keys.find((k) => k.name === "anon") ??
-    keys.find((k) => k.name?.includes("anon")) ??
-    keys.find((k) => k.name !== "service_role" && k.name !== "service role");
+  if (!Array.isArray(keys)) {
+    throw new Error("Supabase API returned an unexpected API keys response");
+  }
 
-  if (!anon?.api_key) {
+  const anon =
+    keys.find((key) => normalizeKeyName(key?.name) === "anon") ??
+    keys.find((key) => normalizeKeyName(key?.name).includes("anon")) ??
+    keys.find((key) => !normalizeKeyName(key?.name).includes("service_role"));
+
+  if (!isNonEmptyString(anon?.api_key)) {
     throw new Error("No anon/publishable key found for this project");
   }
 
@@ -39,5 +57,23 @@ export async function getProjectApiKey(token, ref) {
 }
 
 export function projectUrl(ref) {
+  if (!isValidProjectRef(ref)) {
+    throw new Error("Invalid Supabase project ref");
+  }
+
   return `https://${ref}.supabase.co`;
+}
+
+function isNonEmptyString(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function normalizeKeyName(name) {
+  return isNonEmptyString(name)
+    ? name.toLowerCase().replace(/\s+/g, "_")
+    : "";
+}
+
+function isValidProjectRef(ref) {
+  return /^[a-z0-9-]+$/.test(ref);
 }

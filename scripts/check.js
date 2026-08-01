@@ -15,6 +15,7 @@ const files = [
   "src/generators/vite.js",
   "src/generators/express.js",
   "scripts/check.js",
+  "test/security.test.js",
 ];
 
 for (const file of files) {

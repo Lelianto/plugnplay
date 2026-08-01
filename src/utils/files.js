@@ -23,11 +23,20 @@ export async function writeEnvFile(cwd, filename, vars) {
     return { path: filename, skipped: true };
   }
   const content = Object.entries(vars)
-    .map(([key, value]) => `${key}=${value}`)
+    .map(([key, value]) => `${key}=${formatEnvValue(value)}`)
     .join("\n");
   await mkdir(path.dirname(target), { recursive: true });
   await writeFile(target, content + "\n");
   return { path: filename, skipped: false };
+}
+
+function formatEnvValue(value) {
+  const stringValue = String(value);
+  if (/^[A-Za-z0-9_./:@-]+$/.test(stringValue)) {
+    return stringValue;
+  }
+
+  return JSON.stringify(stringValue);
 }
 
 export async function renderTemplate(key, relativePath, vars) {
